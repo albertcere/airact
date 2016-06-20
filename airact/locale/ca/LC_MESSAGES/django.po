@@ -1,0 +1,377 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-06-20 11:19+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: airelimpio/settings.py:125
+msgid "English"
+msgstr ""
+
+#: airelimpio/settings.py:126
+msgid "Espanol"
+msgstr ""
+
+#: airelimpio/settings.py:127
+msgid "Catalan"
+msgstr ""
+
+#: monitoreo/templates/monitoreo/about.html:6
+#: monitoreo/templates/monitoreo/base.html:31
+msgid "AirAct"
+msgstr ""
+
+#: monitoreo/templates/monitoreo/about.html:7
+msgid ""
+"It is an application developed by the UPC in collaboration with Ecologists "
+"in Action inside the CAPTOR project to inform the public in an "
+"understandable form of air quality in real time and help to act against air "
+"pollution. AirAct is free software, completely free and will remain so."
+msgstr ""
+"És una aplicació desenvolupada per la Universitat Politècnica de Catalunya "
+"en col·laboració amb Ecologistes en Acció. Aquesta aplicació pertany al "
+"projecte CAPTOR i l'objectiu és el d'informar a la població de manera "
+"entenedora de la qualitat de l'aire en temps real i ajudar a actuar contra "
+"la contaminació atmosfèrica. AirAct és de programari lliure, completament "
+"gratuït i romandrà així"
+
+#: monitoreo/templates/monitoreo/about.html:9
+msgid "About the data shown in AirAct"
+msgstr "Sobre les dades mostrades en AirAct"
+
+#: monitoreo/templates/monitoreo/about.html:10
+msgid ""
+"The air pollution sensors provide continuous information online, which is "
+"collected and processed by AirAct in order to provide understandable and "
+"useful information for citizenship."
+msgstr ""
+"Els sensors contaminació atmosfèrica proporcionen infromació contínua a la "
+"xarxa la qual és obtinguda i processada per AirAct per proporcionar "
+"informació útil i comprensible per als ciutadans."
+
+#: monitoreo/templates/monitoreo/about.html:12
+msgid "Compounds information"
+msgstr "Informació sobre els compostos contaminants"
+
+#: monitoreo/templates/monitoreo/about.html:21
+msgid "Recomendations"
+msgstr "Recomanacions"
+
+#: monitoreo/templates/monitoreo/about.html:23
+msgid "Join CAPTOR project."
+msgstr "Uneix-te al projecte CAPTOR."
+
+#: monitoreo/templates/monitoreo/about.html:24
+msgid "Walk, move around by bike, take public transport."
+msgstr "Camina, mou-te en bicicleta, agafa el transport públic."
+
+#: monitoreo/templates/monitoreo/about.html:25
+msgid ""
+"Avoid driving if you have no other option for your regular journeys, you "
+"should look for people to share journeys."
+msgstr ""
+"Evita el cotxe i si no tens altra opció per als teus desplaçaments "
+"habituals, busca gent per compartir els viatges."
+
+#: monitoreo/templates/monitoreo/about.html:26
+msgid ""
+"Reduce your exposure by selecting the less traveled streets when you walk or "
+"when you cycle"
+msgstr ""
+"Redueix la teva exposició triant els carrers menys transitats quan vas a peu "
+"o en bicicleta."
+
+#: monitoreo/templates/monitoreo/about.html:27
+msgid "Reduce electricity consumption and waste generation."
+msgstr "Redueix el consum d'electricitat i la generació de residus."
+
+#: monitoreo/templates/monitoreo/about.html:28
+msgid "Opt for sustainable tourism."
+msgstr "Opta per un turisme sostenible."
+
+#: monitoreo/templates/monitoreo/about.html:29
+msgid ""
+"Change your habits, choose local products from small businesses in the "
+"neighborhood."
+msgstr ""
+"Canvia els teus hàbits de consum, tria productes de proximitat al petit "
+"comerç del barri."
+
+#: monitoreo/templates/monitoreo/about.html:30
+msgid ""
+"Require authorities to report swiftly and understandable levels of "
+"contamination."
+msgstr ""
+"Exigeix a les autoritats que informin de manera àgil i comprensible dels "
+"nivells de contaminació, a través d'Internet i dels mitjans de comunicació."
+
+#: monitoreo/templates/monitoreo/about.html:31
+msgid ""
+"Claim the authorities preparation of mandatory plans for improving air "
+"quality and short-term actions."
+msgstr ""
+"Reclama a les Administracions l'elaboració dels preceptius plans de millora "
+"de la qualitat de l'aire i d'acció a curt termini."
+
+#: monitoreo/templates/monitoreo/about.html:34
+msgid "Mobile features"
+msgstr "Característiques en dispositius mòbils"
+
+#: monitoreo/templates/monitoreo/about.html:35
+msgid ""
+"There is an extra feature for the user who access AirAct from their mobile "
+"devices. They will be able to get pollution information about their current "
+"location based on their GPS."
+msgstr ""
+"Hi ha una funcionalitat extra per als que accedeixen AirAct des dels seus "
+"dispositius mòbils. Podran obtenir informació sobre contaminació de "
+"l'estació més propera basant-se en la posició mitjançant el GPS del "
+"dispositiu."
+
+#: monitoreo/templates/monitoreo/about.html:36
+msgid "Download the Android APP"
+msgstr "Descarrega l'aplicació per Android"
+
+#: monitoreo/templates/monitoreo/about.html:42
+msgid "Facebook Page"
+msgstr "Pàgina de Facebook"
+
+#: monitoreo/templates/monitoreo/about.html:48
+msgid "Twitter Page"
+msgstr "Pàgina de Twitter"
+
+#: monitoreo/templates/monitoreo/about.html:54
+msgid "Ecologistas en Acción"
+msgstr "Ecologistas en Acción"
+
+#: monitoreo/templates/monitoreo/about.html:60
+msgid "CAPTOR Project"
+msgstr "Projecte CAPTOR"
+
+#: monitoreo/templates/monitoreo/base.html:40
+msgid "Map"
+msgstr "Mapa"
+
+#: monitoreo/templates/monitoreo/base.html:41
+#: monitoreo/templates/monitoreo/list.html:7
+msgid "List of stations"
+msgstr "Llistat d'estacions"
+
+#: monitoreo/templates/monitoreo/base.html:42
+msgid "Station"
+msgstr "Estació"
+
+#: monitoreo/templates/monitoreo/base.html:43
+msgid "About"
+msgstr "Sobre AirAct"
+
+#: monitoreo/templates/monitoreo/compound.html:6
+#: monitoreo/templates/monitoreo/station.html:9
+msgid "No data available for the selected station"
+msgstr "No hi ha dades per a l'estació seleccionada"
+
+#: monitoreo/templates/monitoreo/compound.html:15
+msgid "Last update: "
+msgstr "Darrera actualització"
+
+#: monitoreo/templates/monitoreo/compound.html:52
+msgid "From"
+msgstr "Des de"
+
+#: monitoreo/templates/monitoreo/compound.html:53
+msgid "To"
+msgstr "Fins"
+
+#: monitoreo/templates/monitoreo/compound.html:54
+msgid "Go"
+msgstr "Anar"
+
+#: monitoreo/templates/monitoreo/compound.html:56
+msgid "Period: "
+msgstr "Període: "
+
+#: monitoreo/templates/monitoreo/compound.html:63
+#: monitoreo/templates/monitoreo/compound.html:64
+#: monitoreo/templates/monitoreo/compound.html:68
+#: monitoreo/templates/monitoreo/compound.html:69
+msgid "In "
+msgstr "En "
+
+#: monitoreo/templates/monitoreo/compound.html:63
+#: monitoreo/templates/monitoreo/compound.html:64
+#: monitoreo/templates/monitoreo/compound.html:68
+#: monitoreo/templates/monitoreo/compound.html:69
+msgid " day "
+msgstr " dia "
+
+#: monitoreo/templates/monitoreo/compound.html:63
+#: monitoreo/templates/monitoreo/compound.html:64
+#: monitoreo/templates/monitoreo/compound.html:68
+#: monitoreo/templates/monitoreo/compound.html:69
+msgid " days "
+msgstr " dies "
+
+#: monitoreo/templates/monitoreo/compound.html:63
+#: monitoreo/templates/monitoreo/compound.html:64
+msgid "the OMS limit of "
+msgstr "el límit de l'OMS de "
+
+#: monitoreo/templates/monitoreo/compound.html:63
+#: monitoreo/templates/monitoreo/compound.html:64
+#: monitoreo/templates/monitoreo/compound.html:68
+#: monitoreo/templates/monitoreo/compound.html:69
+msgid " has been exceeded "
+msgstr " s'ha superat "
+
+#: monitoreo/templates/monitoreo/compound.html:63
+#: monitoreo/templates/monitoreo/compound.html:64
+#: monitoreo/templates/monitoreo/compound.html:68
+#: monitoreo/templates/monitoreo/compound.html:69
+msgid " time"
+msgstr " vegada"
+
+#: monitoreo/templates/monitoreo/compound.html:63
+#: monitoreo/templates/monitoreo/compound.html:64
+#: monitoreo/templates/monitoreo/compound.html:68
+#: monitoreo/templates/monitoreo/compound.html:69
+msgid " times"
+msgstr " vegades"
+
+#: monitoreo/templates/monitoreo/compound.html:64
+#: monitoreo/templates/monitoreo/compound.html:69
+msgid "pollution"
+msgstr "contaminació"
+
+#: monitoreo/templates/monitoreo/compound.html:64
+#: monitoreo/templates/monitoreo/compound.html:69
+msgid " in "
+msgstr " en "
+
+#: monitoreo/templates/monitoreo/compound.html:68
+#: monitoreo/templates/monitoreo/compound.html:69
+msgid "the EU limit of "
+msgstr "el límit europeu "
+
+#: monitoreo/templates/monitoreo/compound.html:123
+msgid "Date"
+msgstr "Data"
+
+#: monitoreo/templates/monitoreo/compound.html:126
+#: monitoreo/templates/monitoreo/map.html:41
+#: monitoreo/templates/monitoreo/map.html:47
+msgid "Good"
+msgstr "Bo"
+
+#: monitoreo/templates/monitoreo/compound.html:127
+msgid "Poor"
+msgstr "Moderat"
+
+#: monitoreo/templates/monitoreo/compound.html:128
+msgid "Bad"
+msgstr "Dolent"
+
+#: monitoreo/templates/monitoreo/compound.html:129
+msgid "TBad"
+msgstr "Molt dolent"
+
+#: monitoreo/templates/monitoreo/list.html:13
+msgid "Order by name"
+msgstr "Ordenar per nom"
+
+#: monitoreo/templates/monitoreo/list.html:14
+msgid "Order by air quality"
+msgstr "Ordenar per qualitat de l'aire"
+
+#: monitoreo/templates/monitoreo/map.html:16
+msgid "Type of sensor:"
+msgstr "Tipus de sensor:"
+
+#: monitoreo/templates/monitoreo/map.html:18
+msgid "All"
+msgstr "Tots"
+
+#: monitoreo/templates/monitoreo/map.html:23
+msgid "Search"
+msgstr "Cercar"
+
+#: monitoreo/templates/monitoreo/map.html:30
+msgid "Information about a station"
+msgstr "Informació sobre una estació"
+
+#: monitoreo/templates/monitoreo/map.html:31
+msgid ""
+"Click a station of the map to get information about his polluting agents, "
+"you can get more info by clicking a polluting agent"
+msgstr ""
+"Fes clic en una estació del mapa per obtenir informació sobre les mesures "
+"dels agents contaminants, pots obtenir més informació fent clic a un agent "
+"contaminant."
+
+#: monitoreo/templates/monitoreo/map.html:38
+msgid "The stations are classified into four categories:"
+msgstr "Les estacions estan classificades en quatre categories:"
+
+#: monitoreo/templates/monitoreo/map.html:42
+#: monitoreo/templates/monitoreo/map.html:47
+msgid "Moderate"
+msgstr "Moderat"
+
+#: monitoreo/templates/monitoreo/map.html:43
+#: monitoreo/templates/monitoreo/map.html:47
+msgid "Exceeds the OMS limit"
+msgstr "Excedeix el límit de l'OMS"
+
+#: monitoreo/templates/monitoreo/map.html:44
+#: monitoreo/templates/monitoreo/map.html:47
+msgid "Exceeds the European limit"
+msgstr "Excedeix el límit europeu"
+
+#: monitoreo/templates/monitoreo/station.html:6
+msgid ""
+"Enable and accept permission of geolocation in order to get the closest "
+"station"
+msgstr ""
+"Habiliti i accepti el permís de geolocalització per obtenir l'estació més "
+"propera."
+
+#: monitoreo/templates/monitoreo/station.html:38
+msgid ""
+"Air Act could not get the closest station, please check your location "
+"settings "
+msgstr ""
+"Air Act no va poder obtenir l'estació més propera, comproveu les seves "
+"opcions de geolocalització."
+
+#: monitoreo/templates/monitoreo/station.html:41
+msgid "An unknown error occurred, sorry"
+msgstr "S'ha produït un error desconegut."
+
+#: monitoreo/templates/monitoreo/station.html:44
+msgid "Permission to use Geolocation was denied"
+msgstr "Permís per utilitzar la geolocalització denegat"
+
+#: monitoreo/templates/monitoreo/station.html:47
+msgid "Couldn t find you..."
+msgstr "No s'ha pogut situar al mapa"
+
+#: monitoreo/templates/monitoreo/station.html:50
+msgid "The Geolocation request took too long and timed out"
+msgstr "La sol·licitud de geolocalització va excedir el temps permès"
+
+#: monitoreo/templates/monitoreo/station.html:53
+msgid "Problems with geolocation"
+msgstr "Problemes amb la geolocalització"

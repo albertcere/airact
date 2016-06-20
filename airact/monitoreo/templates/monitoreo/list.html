@@ -1,0 +1,42 @@
+{% extends "monitoreo/base.html"%}
+{% load i18n staticfiles %}
+
+{% block content %}
+<div class='row'>
+    <div class='col-xs-6'>
+        <h1>{% trans 'List of stations' %}</h1>
+    </div>
+    <div class='col-xs-6' style="padding-top:30px;">
+        <form id="reordenar" action="" method="post" >{% csrf_token %}
+            <div>
+                <select name="ordenar" id="ordenar" onchange="change()">
+                     <option {% if ordenar == 1%}selected{% endif %} value="1">{% trans 'Order by name' %}</option>
+                     <option {% if ordenar == 2%}selected{% endif %} value="2">{% trans 'Order by air quality' %}</option>
+                </select>
+          </div>
+        </form>
+    </div>
+</div>
+
+<div class='row'>
+    {%for estacion in estaciones%}
+        <div class='col-xs-12 col-sm-6 col-md-6 col-lg-6'>
+            <div class='calle'>
+                <div class='col-xs-10 col-sm-10 col-md-10 col-lg-10'> <!-- Valores -->
+                    <span class='nombre'><a href="{% url 'monitoreo:station' estacion.id%}">{{ estacion.direccion }}</a></span>
+                </div>
+                <div class='col-xs-2 col-sm-2 col-md-2 col-lg-2 text-center'> <!-- Circulos -->
+                    <div class="pull-left circulo {% if estacion.icono == 'i1'%}verde{% elif estacion.icono == 'i2'%}amarillo{% elif estacion.icono == 'i3'%}rojo{% elif estacion.icono == 'i4'%}ultrarojo{% else %}gris{% endif %} pequeno notext"></div>
+                </div>
+            </div>
+        </div>
+    {%endfor%}
+</div>
+
+<script type="text/javascript">
+    function change() {
+        var valor = document.getElementById("ordenar").value;
+        document.getElementById("reordenar").submit();
+    }
+</script>
+{% endblock content %}

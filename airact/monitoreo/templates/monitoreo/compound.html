@@ -1,0 +1,206 @@
+{% extends "monitoreo/base.html"%}
+{% load i18n staticfiles %}
+
+{% block content %}
+{% if bandera == '0' %}
+    <div class="container"><h1>{% trans 'No data available for the selected station' %}</h1></div>
+{% elif bandera == '1' or bandera == '2' %}
+    <div class='container col-xs-12 text-center'>
+        <span class='nombre'>{{observacion.estacion}} - {{observacion.compuesto}}<span class="valor {% if observacion.clasificacion == 'i1' %}verde{% elif observacion.clasificacion == 'i2' %}amarillo{% elif observacion.clasificacion == 'i3' %}rojo{% elif observacion.clasificacion == 'i4' %}ultrarojp{% endif %}">{{observacion.valor}} {{observacion.unidad}}</span></span>
+    <hr>
+    </div>
+    <div class="container side-collapse-container">
+    {% if bandera == '1' %}
+        <div class="col-xs-12 col-sm-5 col-md-5 col-lg-4">
+            <h4>{% trans 'Last update: ' %} {{fechaDato}}</h4>
+            <div class='row escala'>
+                <div class='col-xs-4 text-center'>
+                    <div class='circulo verde grande notext'></div>
+                </div>
+                <div class='col-xs-8'>
+                    <span class='valor-escala'>{{rango.0.desde}} {{observacion.unidad}} - {{rango.0.hasta}} {{observacion.unidad}}</span>
+                </div>
+            </div>
+            <div class='row escala'>
+                <div class='col-xs-4 text-center'>
+                    <div class='circulo amarillo grande notext'></div>
+                </div>
+                <div class='col-xs-8'>
+                    <span class='valor-escala'>{{rango.1.desde}} {{observacion.unidad}} - {{rango.1.hasta}} {{observacion.unidad}}</span>
+                </div>
+            </div>
+            <div class='row escala'>
+                <div class='col-xs-4 text-center'>
+                    <div class='circulo rojo grande notext'></div>
+                </div>
+                <div class='col-xs-8'>
+                    <span class='valor-escala'> {{rango.2.desde}} {{observacion.unidad}} - {{rango.2.hasta}} {{observacion.unidad}} OMS</span>
+                </div>
+            </div>
+            <div class='row escala'>
+                <div class='col-xs-4 text-center'>
+                    <div class='circulo ultrarojo grande notext'></div>
+                </div>
+                <div class='col-xs-8'>
+                    <span class='valor-escala'> > {{rango.3.desde}} {{observacion.unidad}} EU </span>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+        <div class="col-xs-12 {% if bandera == '1' %}col-sm-7 col-md-7 col-lg-8{% endif %}" >
+            <form action="" method="post" class="form-inline" >{% csrf_token %}
+                <input type="text"   id="fecha"  name="fecha" class="form-control" placeholder="{% trans 'From' %}">
+                <input type="text"   id="fechaHasta"  name="fechaHasta" class="form-control" placeholder="{% trans 'To' %}">
+                <input type="submit" class="btn btn-primary" value="{% trans 'Go' %}">
+            </form>
+            <h3>{% trans 'Period: ' %}{{fecha}} - {{fechaHasta}}</h3>
+            <input type="hidden" id="datos"  value="{% for obs in observaciones%}{{obs.tiempo}},{{obs.medida}}|{% endfor %}">
+            <div id="continuous_date_chart"></div>
+        </div>
+        {% if bandera == '1' %}
+        <div class="col-xs-12">
+            <h4>
+                {% trans 'In ' %}{{periodo}}{% if periodo == 1 %}{% trans ' day ' %}{% else %}{% trans ' days ' %}{% endif %}{% trans 'the OMS limit of ' %}{{observacion.compuesto}}{% trans ' has been exceeded ' %}{{contadoroms}}{% if contadoroms == 1 %}{% trans ' time' %}{% else %}{% trans ' times' %}{% endif %}
+                <a class="twitter-share-button" href="https://twitter.com/share" data-related="twitterapi,twitter" data-hashtags="{% trans 'pollution' %}" data-text="{% trans 'In ' %}{{observacion.estacion}}{% trans ' in ' %}{{periodo}}{% if periodo == 1 %}{% trans ' day ' %}{% else %}{% trans ' days ' %}{% endif %}{% trans 'the OMS limit of ' %}{{observacion.compuesto}}{% trans ' has been exceeded ' %}{{contadoroms}}{% if contadoroms == 1 %}{% trans ' time' %}{% else %}{% trans ' times' %}{% endif %}">Tweet</a>
+                <!-- Your share button code --><div class="fb-share-button" data-layout="button"></div>
+            </h4>
+            <h4>
+                {% trans 'In ' %}{{periodo}}{% if periodo == 1 %}{% trans ' day ' %}{% else %}{% trans ' days ' %}{% endif %}{% trans 'the EU limit of ' %}{{observacion.compuesto}}{% trans ' has been exceeded ' %}{{contadoreu}}{% if contadoreu == 1 %}{% trans ' time' %}{% else %}{% trans ' times' %}{% endif %}
+                <a class="twitter-share-button" href="https://twitter.com/share" data-related="twitterapi,twitter" data-hashtags="{% trans 'pollution' %}" data-text="{% trans 'In ' %}{{observacion.estacion}}{% trans ' in ' %}{{periodo}}{% if periodo == 1 %}{% trans ' day ' %}{% else %}{% trans ' days ' %}{% endif %}{% trans 'the EU limit of ' %}{{observacion.compuesto}}{% trans ' has been exceeded ' %}{{contadoreu}}{% if contadoreu == 1 %}{% trans ' time' %}{% else %}{% trans ' times' %}{% endif %}">Tweet</a>
+                <!-- Your share button code --><div class="fb-share-button" data-layout="button"></div>
+            </h4>
+        </div>
+        {% endif %}
+    </div>
+{% endif %}
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '1689764754608960',
+      xfbml      : true,
+      version    : 'v2.6'
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
+<script>(function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+      js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1";
+      fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+<script>
+    $(document).ready(function() {
+        $("#fecha").datepicker({
+            changeMonth: true,
+            changeYear: true});
+        $('#fecha').datepicker('option',{dateFormat:'dd/mm/yy'});
+        $("#fechaHasta").datepicker({
+            changeMonth: true,
+            changeYear: true});
+        $('#fechaHasta').datepicker('option',{dateFormat:'dd/mm/yy'});
+    });
+</script>
+<script type="text/javascript">
+    google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawContinuousDateChart);
+      function drawContinuousDateChart() {
+        var data = new google.visualization.DataTable();
+        data.addColumn('datetime', '{% trans "Date" %}');
+        data.addColumn('number', '{{observacion.compuesto|safe}} ({{observacion.unidad}})');
+        {% if bandera == '1' %}
+            data.addColumn('number', '{% trans 'Good' %}');
+            data.addColumn('number', '{% trans 'Poor' %}');
+            data.addColumn('number', '{% trans 'Bad' %}');
+            data.addColumn('number', '{% trans 'TBad' %}');
+            var good = {{rango.0.hasta|safe}}
+            var poor = {{rango.1.hasta|safe}} - good;
+            var bad = {{rango.2.hasta|safe}} - poor;
+            var tbad = bad;
+        {% endif %}
+
+        //**********************Interpretacion datos*********************
+        var arreglo = document.getElementById('datos').value.split("|");
+        for (i=0;i<arreglo.length;i++)
+        {
+            if (arreglo[i]!="")
+            {
+                var tupla = arreglo[i].split(",");
+                var instante = tupla[0].split(" ");
+                var fecha = instante[0].split("-");
+                var hora = instante[1].split(":");
+                var valor = tupla[1];
+                {% if bandera == '1' %}
+                data.addRow([new Date(fecha[0], fecha[1]-1, fecha[2],hora[0],hora[1],hora[2]), parseFloat(valor),parseFloat(good), parseFloat(poor), parseFloat(bad), parseFloat(tbad)]);
+                {% elif bandera == '2' %}
+                    data.addRows([[new Date(fecha[0], fecha[1]-1, fecha[2],hora[0],hora[1],hora[2]), parseFloat(valor)]]);
+                {% endif %}
+            }
+        }
+        var chart = new google.visualization.ComboChart(document.getElementById('continuous_date_chart'));
+
+        chart.draw(data, {
+            legend: {position:'bottom'},
+            height: 400,
+            isStacked: true,
+            hAxis: {
+                format: 'dd MMM HH:mm'
+            },
+            vAxis: {
+                minValue: 0,
+                title: "{{observacion.compuesto|safe}} - {{observacion.unidad}}",
+            },
+            series: {
+                0: {
+                    type: 'line'
+                },
+                1: {
+                    color: 'green',
+                    lineWidth: 0,
+                    type: 'area',
+                    visibleInLegend: false,
+                    enableInteractivity: false
+                },
+                2: {
+                    color: 'orange',
+                    lineWidth: 0,
+                    type: 'area',
+                    visibleInLegend: false,
+                    enableInteractivity: false
+                },
+                3: {
+                    color: 'red',
+                    lineWidth: 0,
+                    type: 'area',
+                    visibleInLegend: false,
+                    enableInteractivity: false
+                },
+                4: {
+                    color: '#660000',
+                    lineWidth: 0,
+                    type: 'area',
+                    visibleInLegend: false,
+                    enableInteractivity: false
+                }
+            }
+    });
+
+      }
+</script>
+
+
+{% endblock content %}

@@ -1,0 +1,336 @@
+{% extends "monitoreo/base.html"%}
+{% load i18n staticfiles %}
+
+
+{% block content %}
+
+
+
+
+<div class="container" >
+    <div role="listbox">
+        <div>
+        <div class="container col-xs-12">
+          <form action="" method="post" >{% csrf_token %}
+              <div>
+                  <label>{% trans 'Type of sensor:' %}</label>
+                  <select name="agente" id="agente">
+                    <option value="">{% trans 'All' %}</option>
+                    {%for ct in cat%}
+                    <option value="{{ct.codigo}}" {% if ct.codigo == agent%}selected{% endif %} >{{ct.descripcion}}</option>
+                    {%endfor%}
+                  </select>
+                  <input type="submit" class="btn btn-primary btn-xs" value="{% trans 'Search' %}">
+              </div>
+            </form>
+          </div>
+          <div class="panel-group">
+            <div class="col-xs-12 col-sm-7" id="capa-mapa" style="height:450px; margin-top: 20px"></div>
+            <div class="col-xs-12 col-sm-5" id="info-station" style="margin-top: 20px">
+              <h3>{% trans 'Information about a station' %}</h3>
+              <p>{% trans 'Click a station of the map to get information about his polluting agents, you can get more info by clicking a polluting agent' %}</p>
+            </div>
+          </div>
+            <input type="hidden" width="0px" name="puntosMad" id="puntosMad" value="{{puntosmapaMad}}"/>
+            <input type="hidden" width="0px" name="puntosCat" id="puntosCat" value="{{puntosmapaCat}}"/><br />
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-top:10px;">
+          <p>{% trans 'The stations are classified into four categories:' %}</p>
+          {% if phone == 'Yes' %}
+            <ul style="list-style-type:none">
+              <li><img src="{% static 'monitoreo/img/marker_green.png' %}" width="30" height="30">{% trans 'Good' %}</li>
+              <li><img src="{% static 'monitoreo/img/marker_yellow.png' %}" width="30" height="30">{% trans 'Moderate' %}</li>
+              <li><img src="{% static 'monitoreo/img/marker_red.png' %}" width="30" height="30">{% trans 'Exceeds the OMS limit' %}</li>
+              <li><img src="{% static 'monitoreo/img/marker_ultra_red.png' %}" width="30" height="30">{% trans 'Exceeds the European limit' %}</li>
+            </ul>
+          {% else %}
+            <p><img src="{% static 'monitoreo/img/marker_green.png' %}" width="30" height="30">{% trans 'Good' %} <img src="{% static 'monitoreo/img/marker_yellow.png' %}" width="30" height="30">{% trans 'Moderate' %} <img src="{% static 'monitoreo/img/marker_red.png' %}" width="30" height="30">{% trans 'Exceeds the OMS limit' %} <img src="{% static 'monitoreo/img/marker_ultra_red.png' %}" width="30" height="30">{% trans 'Exceeds the European limit' %}</p>
+          {% endif %}
+        </div>
+    </div>
+</div>
+
+<script src="https://maps.google.com/maps/api/js?key=AIzaSyDTcg0BKcX3T-dXIyoJWyr7sTu6tPEPbrc 
+&language={{ LANGUAGE_CODE }}" type="text/javascript"></script>
+<script src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+<script src="//d3js.org/d3.v3.min.js"></script>
+
+<script type="text/javascript">
+        var bounds = new google.maps.LatLngBounds();
+        var myCenter = new google.maps.LatLng(40.495213, -3.238259);
+        var map;
+        var div_info_station = document.getElementById('info-station');
+
+        var boundingCatConvex = d3.geom.polygon([
+          [42.775020, 0.481627],
+          [40.707298, 0.072022],
+          [40.478084, 0.571829],
+          [41.808688, 3.400292],
+          [42.412169, 3.262255]
+        ]);
+
+        var boundingMadConvex = d3.geom.polygon([
+          [41.111730, -3.520855],
+          [40.428405, -4.585605],
+          [39.930097, -3.803562],
+          [40.198778, -3.064090]
+        ]);
+        function inicializaGoogleMaps()
+        {
+            puntosCat = document.getElementById("puntosCat").value;
+            puntosMad = document.getElementById("puntosMad").value;
+            if (puntosCat=="" || puntosCat.substring(0,5)=="Error" || puntosMad=="" || puntosMad.substring(0,5)=="Error")
+                alert("Error al obtener estaciones");
+            misPuntosCat = String(puntosCat).split(":::");
+            misPuntosMad = String(puntosMad).split(":::");
+            latlongPuntosCat = new Array();
+            iconoCat = new Array();
+            for (i=0;i< misPuntosCat.length;i++){
+                if (misPuntosCat[i]!=""){
+                    misPuntosCat[i]=misPuntosCat[i].split("@");
+                    var latlng = new google.maps.LatLng(misPuntosCat[i][1], misPuntosCat[i][2]);
+                    latlongPuntosCat[i] = new Array(2);
+                    latlongPuntosCat[i][0] = parseFloat(misPuntosCat[i][1]);
+                    latlongPuntosCat[i][1] = parseFloat(misPuntosCat[i][2]);
+                    iconoCat[i] = misPuntosCat[i][3];
+                    bounds.extend(latlng);}
+            }
+            latlongPuntosMad = new Array();
+            iconoMad = new Array();
+            for (i=0;i< misPuntosMad.length;i++){
+                if (misPuntosMad[i]!=""){
+                    misPuntosMad[i]=misPuntosMad[i].split("@");
+                    var latlng = new google.maps.LatLng(misPuntosMad[i][1], misPuntosMad[i][2]);
+                    latlongPuntosMad[i] = new Array(2);
+                    latlongPuntosMad[i][0] = parseFloat(misPuntosMad[i][1]);
+                    latlongPuntosMad[i][1] = parseFloat(misPuntosMad[i][2]);
+                    iconoMad[i] = misPuntosMad[i][3];
+                    bounds.extend(latlng);}
+            }
+            var mapOptions = {
+              zoom: 6,
+              center: myCenter,
+              mapTypeId: google.maps.MapTypeId.ROADMAP,
+              panControl: true,
+              mapTypeControl: true,
+              panControlOptions: {
+                  position: google.maps.ControlPosition.RIGHT_TOP
+              },
+              zoomControl: true,
+              zoomControlOptions: {
+                  style: google.maps.ZoomControlStyle.LARGE,
+                  position: google.maps.ControlPosition.LEFT_TOP
+              },
+              scaleControl: false,
+              streetViewControl: false,
+              streetViewControlOptions: {
+                  position: google.maps.ControlPosition.LEFT_TOP
+              }
+            }
+            map = new google.maps.Map(document.getElementById("capa-mapa"), mapOptions);
+            if( /Android|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+              document.getElementById("capa-mapa").style.height='200px';
+            }
+            if (puntosCat!="")
+            {
+                setVoronoi(map, latlongPuntosCat, latlongPuntosMad, iconoCat, iconoMad);
+                setGoogleMarkers(map, misPuntosCat, misPuntosMad);
+                //ajustar el mapa para que todos los puntos se visualicen
+                map.fitBounds(bounds);
+            }
+            MinZoomLevel=3;
+            MaxZoomLevel=15;
+            google.maps.event.addListener(map,"zoom_changed",function() {
+                if(map.getZoom()<MinZoomLevel) map.setZoom(MinZoomLevel);
+                if(map.getZoom()>MaxZoomLevel) map.setZoom(MaxZoomLevel);               
+            });
+        }
+        var infowindowActivo = false;
+        function setGoogleMarkers(map, locationscat, locationsmad)
+        {
+            // Definimos los iconos a utilizar con sus medidas
+            //nivel bueno i1
+            var i1 = {
+              url: "/static/monitoreo/img/marker_green.png",
+              scaledSize: new google.maps.Size(30, 30)
+            };
+            //nivel medio i2
+            var i2 = {
+              url: "/static/monitoreo/img/marker_yellow.png",
+              scaledSize: new google.maps.Size(30, 30)
+            };
+            //nivel malo i3
+            var i3 = {
+              url: "/static/monitoreo/img/marker_red.png",
+              scaledSize: new google.maps.Size(30, 30)
+            };
+            //nivel muy malo i4
+            var i4 = {
+              url: "/static/monitoreo/img/marker_ultra_red.png",
+              scaledSize: new google.maps.Size(30, 30)
+            };
+            //nivel extra i8
+            var i8 = {
+              url: "/static/monitoreo/img/marker_blue.png",
+              scaledSize: new google.maps.Size(30, 30)
+            };
+            //nivel sin datos i9
+            //Funcionando para Air Act
+            var i9 = {
+              url: "/static/monitoreo/img/marker_grey.png",
+              scaledSize: new google.maps.Size(30, 30)
+            };
+
+                var markerr, i;
+
+                for (i = 0; i < locationscat.length; i++) {  
+                  marker = new google.maps.Marker({
+                    position: new google.maps.LatLng(locationscat[i][1], locationscat[i][2]),
+                    map: map,
+                    icon: eval(locationscat[i][3]),
+                    title: locationscat[i][0]
+                  });
+
+                  google.maps.event.addListener(marker, 'click', (function(marker, i) {
+                    return function() {
+                      $(div_info_station).html("<h3>"+ locationscat[i][0] +"</h3><iframe  src='/frame_station/"+locationscat[i][5]+"' frameborder='0' width='100%' height='350px'></iframe>");
+
+                    }
+                  })(marker, i));
+                }
+
+                for (i = 0; i < locationsmad.length; i++) {  
+                  marker = new google.maps.Marker({
+                    position: new google.maps.LatLng(locationsmad[i][1], locationsmad[i][2]),
+                    map: map,
+                    icon: eval(locationsmad[i][3]),
+                    title: locationsmad[i][0]
+                  });
+
+                  google.maps.event.addListener(marker, 'click', (function(marker, i) {
+                    return function() {
+                      $(div_info_station).html("<h3>"+ locationsmad[i][0] +"</h3><iframe  src='/frame_station/"+locationsmad[i][5]+"' frameborder='0' width='100%' height='350px'></iframe>");
+
+                    }
+                  })(marker, i));
+                }
+
+
+
+            
+        }
+        function setVoronoi(map, latlongcat, latlongmad, iconoc, iconom){
+
+          var vorcat = d3.geom.voronoi(latlongcat).map(function(cell) {
+            return boundingCatConvex.clip(cell);
+          });
+          var vormad = d3.geom.voronoi(latlongmad).map(function(cell) {
+            return boundingMadConvex.clip(cell);
+          });
+          var i1 = '#228B22';
+          var i2 = '#FFFF00';
+          var i3 = '#FF0000';
+          var i4 = '#660000';
+          var i8 = '#0000FF';
+          var i9 = '#6C7B8B';
+
+          var polygons = new Array();
+          var arr;
+          for(i=0;i<vorcat.length; i++) {
+            arr = [];
+            for(j=0; j<vorcat[i].length; j++) {
+              if(isNaN(vorcat[i][j][0]) || isNaN(vorcat[i][j][0])) console.log("NaN Point");
+              else{
+                arr.push(new google.maps.LatLng(
+                  vorcat[i][j][0],
+                  vorcat[i][j][1]
+                ));
+              }
+              
+            }
+            polygons.push(new google.maps.Polygon({
+              paths: arr,
+              strokeColor: eval(iconoc[i]),
+              strokeOpacity: 0.6,
+              strokeWeight: 2,
+              fillColor: eval(iconoc[i]),
+              fillOpacity: 0.25
+            }));
+            polygons[polygons.length-1].setMap(map);   
+          }
+          for(i=0;i<vormad.length; i++) {
+            arr = [];
+            for(j=0; j<vormad[i].length; j++) {
+              if(isNaN(vormad[i][j][0]) || isNaN(vormad[i][j][0])) console.log("NaN Point");
+              else{
+                arr.push(new google.maps.LatLng(
+                  vormad[i][j][0],
+                  vormad[i][j][1]
+                ));
+              }
+              
+            }
+
+            polygons.push(new google.maps.Polygon({
+              paths: arr,
+              strokeColor: eval(iconom[i]),
+              strokeOpacity: 0.8,
+              strokeWeight: 2,
+              fillColor: eval(iconom[i]),
+              fillOpacity: 0.35
+            }));
+            polygons[polygons.length-1].setMap(map);   
+          }
+        }
+        inicializaGoogleMaps();
+        /*document.getElementById('agente').value='{{agente}}'*/
+</script>
+
+<style type="text/css">
+   .carousel-caption {
+/*    position: absolute;*/
+    right: 0%;
+    bottom: 20px;
+    left: 0%;
+    text-align: left;
+    /*padding-top: 10px;
+    padding-bottom: 0px;*/
+    color:grey;
+    background-color:  rgba(255, 255, 255, 0.5);
+    }
+
+    .myInfobox {
+          border: solid 1px black;
+          background-color:rgba(255, 255, 255, 0.5);
+          width: 280px;
+          color: #000;
+          font-family: Arial;
+          font-size: 14px;
+          padding: .5em 1em;
+          border-radius: 10px;
+          font=weight: bold;
+          margin-left: 0px;
+          margin-top: 0px
+      }
+      /* white background and box outline */
+      .gm-style > div:first-child > div + div > div:last-child > div > div:first-child > div
+      {
+          /* we have to use !important because we are overwritng inline styles */
+          background-color: transparent !important;
+          box-shadow: none !important;
+          width: auto !important;
+          height: auto !important;
+      }
+      /* arrow colour */
+      .gm-style > div:first-child > div + div > div:last-child > div > div:first-child > div > div > div
+      {
+          background-color: #003366 !important; 
+      }
+      /* positioning of infowindow */
+      .gm-style-iw
+      {
+          top: 22px !important;
+          left: 22px !important;
+      }
+</style>
+{% endblock content %}

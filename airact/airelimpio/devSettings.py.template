@@ -1,0 +1,13 @@
+#devSettings: settings in development
+
+APP_SECRET_KEY = ''
+
+APP_DATABASES = {
+   'default': {
+       'ENGINE': 'django.db.backends.mysql',
+       'NAME': '',
+       'USER': '',
+       'PASSWORD': '',
+       'HOST': '',
+   }
+}

@@ -1,0 +1,110 @@
+{% extends "monitoreo/base.html"%}
+{% load i18n staticfiles %}
+
+
+{% block content %}
+<h3>{% trans 'AirAct' %}</h3>
+<p align="justify">{% trans 'It is an application developed by the UPC in collaboration with Ecologists in Action inside the CAPTOR project to inform the public in an understandable form of air quality in real time and help to act against air pollution. AirAct is free software, completely free and will remain so.' %}</p>
+<br>
+<h4>{% trans 'About the data shown in AirAct'%}</h4>
+<p align="justify">{% trans 'The air pollution sensors provide continuous information online, which is collected and processed by AirAct in order to provide understandable and useful information for citizenship.'%}</p>
+<br>
+<h4>{% trans 'Compounds information' %}</h4>
+{% for compuesto in compuestos%}
+    <button class="accordion">{{compuesto.descripcion}}</button>
+    <div class="panel">
+      <p>{{compuesto.definicion}}</p>
+    </div>
+{% endfor %}
+<br>
+<br>
+<h4>{% trans 'Recomendations' %}</h4>
+<ul>
+    <li>{% trans 'Join CAPTOR project.' %}</li>
+    <li>{% trans 'Walk, move around by bike, take public transport.' %}</li>
+    <li>{% trans 'Avoid driving if you have no other option for your regular journeys, you should look for people to share journeys.' %}</li>
+    <li>{% trans 'Reduce your exposure by selecting the less traveled streets when you walk or when you cycle' %}</li>
+    <li>{% trans 'Reduce electricity consumption and waste generation.' %}</li>
+    <li>{% trans 'Opt for sustainable tourism.' %}</li>
+    <li>{% trans 'Change your habits, choose local products from small businesses in the neighborhood.' %}</li>
+    <li>{% trans 'Require authorities to report swiftly and understandable levels of contamination.' %}</li>
+    <li>{% trans 'Claim the authorities preparation of mandatory plans for improving air quality and short-term actions.' %}</li>
+</ul>
+<br>
+<h4>{% trans 'Mobile features'%}</h4>
+<p align="justify">{% trans 'There is an extra feature for the user who access AirAct from their mobile devices. They will be able to get pollution information about their current location based on their GPS.'%}</p>
+<a href="{% static 'monitoreo/airact.apk' %}">{% trans 'Download the Android APP'%}</a>
+<div class="push5"></div>
+<div class="row">
+    <div class="col-xs-6 col-sm-3 col-md-3 col-lg-3" style="text-align:center;">
+        <a href='#'>
+            <p><img width="40%" src="{% static 'monitoreo/img/Facebook.png' %}"/></p>
+            <p>{% trans 'Facebook Page'%}</p>
+        </a>
+    </div>
+    <div class="col-xs-6 col-sm-3 col-md-3 col-lg-3" style="text-align:center;">
+        <a href='#'>
+            <p><img width="40%" src="{% static 'monitoreo/img/Twitter.png' %}"/></p>
+            <p>{% trans 'Twitter Page'%}</p>
+        </a>
+    </div>
+    <div class="col-xs-6 col-sm-3 col-md-3 col-lg-3" style="text-align:center;">
+        <a href='http://www.ecologistasenaccion.es/'>
+            <p><img width="40%" src="{% static 'monitoreo/img/Ecologistas-en-Accion.png' %}"/></p>
+            <p>{% trans 'Ecologistas en Acción'%}</p>
+        </a>
+    </div>
+    <div class="col-xs-6 col-sm-3 col-md-3 col-lg-3" style="text-align:center;">
+        <a href='https://www.captor-project.eu'>
+            <p><img width="40%" src="{% static 'monitoreo/img/Captor.png' %}"/></p>
+            <p>{% trans 'CAPTOR Project'%}</p>
+        </a>
+    </div>
+</div>
+
+<style type="text/css">
+    
+/* Style the buttons that are used to open and close the accordion panel */
+button.accordion {
+    background-color: #eee;
+    color: #428bca;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    text-align: left;
+    border: none;
+    outline: none;
+    transition: 0.4s;
+}
+
+/* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
+button.accordion.active, button.accordion:hover {
+    background-color: #ddd;
+}
+
+/* Style the accordion panel. Note: hidden by default */
+div.panel {
+    padding: 0 18px;
+    background-color: white;
+    display: none;
+}
+
+/* The "show" class is added to the accordion panel when the user clicks on one of the buttons. This will show the panel content */
+div.panel.show {
+    display: block !important;
+}
+
+</style>
+
+<script type="text/javascript">
+    var acc = document.getElementsByClassName("accordion");
+    var i;
+
+    for (i = 0; i < acc.length; i++) {
+        acc[i].onclick = function(){
+            this.classList.toggle("active");
+            this.nextElementSibling.classList.toggle("show");
+        }
+    }
+</script>
+{% endblock content %}

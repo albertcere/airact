@@ -1,0 +1,28 @@
+#devMonitoreo: settings of tareaMonitoreo
+
+# Database
+
+DBUSER = ''
+DBPASS = ''
+DBNAME = ''
+DBHOST = ''
+
+#From Mail
+
+MAILFROM = ''
+MAILPASS = ''
+
+
+REDES_SOCIALES = ''
+
+#Facebook API
+
+FBGRAPHAPI = ""
+FBPARENTOBJECT = ""
+
+#Twitter API
+
+TWCONSUMERKEY = ''
+TWCONSUMERSECRET = ''
+TWACCESTOKENKEY = ''
+TWACCESTOKENSECRET = ''

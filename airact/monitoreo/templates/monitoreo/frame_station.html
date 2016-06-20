@@ -1,0 +1,32 @@
+{% load i18n staticfiles %}
+<!DOCTYPE html>
+
+<html lang="{{ LANGUAGE_CODE|default:"en-us" }}">
+<head>
+  <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+  <link href="{% static "monitoreo/css/index.css" %}" rel="stylesheet">
+  <link href="{% static "monitoreo/css/bootstrap-theme.min.css" %}" rel="stylesheet">
+  <link href="{% static "monitoreo/css/dev.css" %}" rel="stylesheet">
+  <script src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+  <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+  <script src="{% static "monitoreo/index.js" %}"></script>
+</head>
+
+<body style="border:0px 0px 0px 0px !important; padding:0px 0px 0px 0px !important; overflow-x:hidden; height:100%;">
+  <div class="row">
+    <div class='col-xs-12'>
+      {%for identificador, dat in obs%}
+        <div class="panel-group" id="accordion">
+          <div class="panel panel-default first-panel col-xs-12 col-sm-6 col-md-4 col-lg-4">
+            <div class="panel-heading">
+                <a target="_parent" href="{% url 'monitoreo:compound' stationid identificador%}">{{dat.descripcion}}</a>
+                <a target="_parent" href="{% url 'monitoreo:compound' stationid identificador%}" class="pull-right circulo {% if dat.clasificacion == 'i1'%}verde{% elif dat.clasificacion == 'i2'%}amarillo{% elif dat.clasificacion == 'i3'%}rojo{% elif dat.clasificacion == 'i4'%}ultrarojo{% else %}trans{% endif %}">{{dat.valor}} {{dat.unidad}}</a>
+            </div>
+          </div>
+        </div>
+      {%endfor%}
+
+    </div>
+  </div>
+</body>
+</html>

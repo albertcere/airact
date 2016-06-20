@@ -1,0 +1,167 @@
+{% extends "monitoreo/base.html"%}
+{% load i18n staticfiles %}
+
+{% block content %}
+{% if bandera == '2'%}
+<h1 id="geolocate">{% trans 'Enable and accept permission of geolocation in order to get the closest station' %}</h1>
+<form action="" method="post" id="currentpos">{% csrf_token %}</form>
+{% elif bandera == '0' %}
+	<h1>{% trans 'No data available for the selected station' %}</h1>
+{% elif bandera == '1' %}
+    <div class="container">
+    	<h1>{{station}}</h1>
+    	{%for identificador, observacion in observaciones%}
+    		<div id="accordion">
+              <div class="panel panel-default first-panel col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                <div class="panel-heading">
+                    <a href="{% url 'monitoreo:compound' stationid identificador%}">{{observacion.descripcion}}</a>
+                    <a href="{% url 'monitoreo:compound' stationid identificador%}" class="pull-right circulo {% if observacion.clasificacion == 'i1'%}verde{% elif observacion.clasificacion == 'i2'%}amarillo{% elif observacion.clasificacion == 'i3'%}rojo{% elif observacion.clasificacion == 'i4'%}ultrarojo{% else %}trans{% endif %}">{{observacion.valor}} {{observacion.unidad}}</a>
+                </div>
+              </div>
+            </div>
+    	{%endfor%}
+    	<input type="hidden" width="0px" name="latitud" id="latitud" value="{{latitud}}"/>
+        <input type="hidden" width="0px" name="longitud" id="longitud" value="{{longitud}}"/>
+        <input type="hidden" width="0px" name="clasificacion" id="clasificacion" value="{{clasificacion}}"/>
+    	<div class="col-xs-12" id="capa-mapa" style="height:400px; margin-top: 20px"></div>
+    </div>
+{% endif %}
+
+<script src="https://maps.google.com/maps/api/js?key=AIzaSyDTcg0BKcX3T-dXIyoJWyr7sTu6tPEPbrc 
+&language={{ LANGUAGE_CODE }}" type="text/javascript"></script>
+<script src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+<script src="//d3js.org/d3.v3.min.js"></script>
+
+
+<script type="text/javascript">
+function locateFail(geoPositionError) { 
+    document.getElementById("geolocate").innerHTML = "{% trans 'Air Act could not get the closest station, please check your location settings ' %}";
+    switch (geoPositionError.code) { 
+        case 0: // UNKNOWN_ERROR 
+            alert("{% trans 'An unknown error occurred, sorry' %}"); 
+            break; 
+        case 1: // PERMISSION_DENIED 
+            alert("{% trans 'Permission to use Geolocation was denied' %}"); 
+            break; 
+        case 2: // POSITION_UNAVAILABLE 
+            alert("{% trans 'Couldn t find you...' %}"); 
+            break; 
+        case 3: // TIMEOUT 
+            alert("{% trans 'The Geolocation request took too long and timed out' %}"); 
+            break; 
+        default: 
+            alert("{% trans 'Problems with geolocation' %}");
+    } 
+}
+{% if bandera == '2' %}
+if (navigator.geolocation) {
+  navigator.geolocation.getCurrentPosition(function(position) {
+    var lat = position.coords.latitude;
+    var lng = position.coords.longitude;
+
+    var form = document.getElementById("currentpos");
+    var latform = document.createElement("input");
+    var lngform = document.createElement("input");
+
+    latform.value = lat;
+    latform.name = 'lat';
+    latform.type = 'hidden';
+    form.appendChild(latform);
+
+    lngform.value = lng;
+    lngform.name = 'lng';
+    lngform.type = 'hidden';
+    form.appendChild(lngform);
+
+    form.submit();
+  }, locateFail, {enableHighAccuracy: true, maximumAge: 100000, timeout: 150000});
+
+} else {
+  console.log("No geolocalization available");
+}
+{% endif %}
+{% if bandera == '1' %}
+function inicializaGoogleMaps() {
+	var map;
+	var latitud = parseFloat(document.getElementById('latitud').value.replace(',', '.'));
+	var longitud = parseFloat(document.getElementById('longitud').value.replace(',', '.'));
+	var clasificacion = document.getElementById('clasificacion').value;
+	var myCenter = new google.maps.LatLng(latitud, longitud);
+	var bounds = new google.maps.LatLngBounds();
+	bounds.extend(myCenter);
+	// Definimos los iconos a utilizar con sus medidas
+    //nivel bueno i1
+	var i1 = {
+      url: "/static/monitoreo/img/marker_green.png",
+      scaledSize: new google.maps.Size(30, 30)
+    };
+    //nivel medio i2
+    var i2 = {
+      url: "/static/monitoreo/img/marker_yellow.png",
+      scaledSize: new google.maps.Size(30, 30)
+    };
+    //nivel malo i3
+    var i3 = {
+      url: "/static/monitoreo/img/marker_red.png",
+      scaledSize: new google.maps.Size(30, 30)
+    };
+    //nivel muy malo i4
+    var i4 = {
+      url: "/static/monitoreo/img/marker_ultra_red.png",
+      scaledSize: new google.maps.Size(30, 30)
+    };
+    //nivel extra i8
+    var i8 = {
+      url: "/static/monitoreo/img/marker_blue.png",
+      scaledSize: new google.maps.Size(30, 30)
+    };
+    //nivel sin datos i9
+    //Funcionando para Air Act
+    var i9 = {
+      url: "/static/monitoreo/img/marker_grey.png",
+      scaledSize: new google.maps.Size(30, 30)
+    };
+	var mapOptions = {
+		zoom: 6,
+		center: myCenter,
+		mapTypeId: google.maps.MapTypeId.ROADMAP,
+		panControl: true,
+		mapTypeControl: true,
+		panControlOptions: {
+		  position: google.maps.ControlPosition.RIGHT_TOP
+		},
+		zoomControl: true,
+		zoomControlOptions: {
+		  style: google.maps.ZoomControlStyle.LARGE,
+		  position: google.maps.ControlPosition.LEFT_TOP
+		},
+		scaleControl: false,
+		streetViewControl: false,
+		streetViewControlOptions: {
+		  position: google.maps.ControlPosition.LEFT_TOP
+		}
+	}
+	map = new google.maps.Map(document.getElementById("capa-mapa"), mapOptions);
+
+	map.fitBounds(bounds);
+
+	MinZoomLevel=3;
+    MaxZoomLevel=15;
+    google.maps.event.addListener(map,"zoom_changed",function() {
+        if(map.getZoom()<MinZoomLevel) map.setZoom(MinZoomLevel);
+        if(map.getZoom()>MaxZoomLevel) map.setZoom(MaxZoomLevel);               
+    });
+
+	marker = new google.maps.Marker({
+	    position: new google.maps.LatLng(latitud, longitud),
+	    map: map,
+	    icon: eval(clasificacion)
+	});
+}
+
+inicializaGoogleMaps();
+
+{% endif %}
+</script>
+
+{% endblock content %}
